@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Appointment;
+use Carbon\Carbon;
+
+class OrderController extends Controller
+{
+    public function CreateOrderForJoinToSchool(Request $request)
+    {
+        //while(user_id==null)
+        //{
+            $new = new Order;
+
+            $new->first_name = $request->first_name;
+            $new->last_name = $request->last_name;
+            $new->father_name = $request->father_name;
+            $new->birthday = $request->birthday;
+            $new->gender = $request->gender;
+            $new->phone = $request->phone;
+            $new->address = $request->address;
+            $new->email = $request->email;
+            $new->classification = $request->classification;
+            $new->class = $request->class;
+            $new->year = $request->year;
+            $new->save();
+        //}
+    }
+
+    public function DisplayOrderNewStudent()
+    {
+        $order = DB::table('orders')->where('student_id','=',null)->get();
+
+        return $order;
+    }
+
+    public function GiveDate(Request $request, $order_id)
+    {
+        $order = Order::where('id',$order_id)->get();
+
+        $new = new Appointment;
+
+        $new->date =$request->date;
+        $new->order_id = $order_id;
+
+        $today = Carbon::today();
+
+        echo $today;
+        echo $request->date;
+        if ($new->date->diff($today)->days < 0)
+        {
+            return response()->json('you insert date not valid');
+        }
+        else
+        {
+            $new->save();
+        }
+
+    }
+
+}
