@@ -706,6 +706,22 @@ private function getActionDescription($path, $request)
     }
 
 
+    if (preg_match('/^api\/monetor\/add_marks_to_section\/(\d+)$/', $path, $matches)) {
+        $sectionId = $matches[1];
+
+        $section = \App\Models\Section::find($sectionId);
+        $subject = \App\Models\Subject::find($request->subject_id);
+
+        $message = 'تم إضافة علامات '.$request->mark_type.' جديدة '."\n".
+        'إلى طلاب الشعبة: '.$section->num_section.' الصف: '.$section->classs->name
+        .' في مادة '. $subject->name;
+        
+        return $message;
+
+    }
+    
+
+
 
 
     /************teacher************/
@@ -817,7 +833,7 @@ private function getActionDescription($path, $request)
     
         // تكوين رسالة لتسجيل النشاط
         $message = 'تم إنشاء مناقشة جديدة بواسطة الأستاذ: ' . $teacher->user->first_name . ' ' . $teacher->user->last_name ."\n".
-                   ' بعنوان المناقشة: "' . $post->quostion ."\n". '" للصف: ' . $section->classs->name .
+                   ' بعنوان المناقشة: "' . $request->quostion ."\n". '" للصف: ' . $section->classs->name .
                    ' الشعبة: ' . $section->num_section;
     
         return $message;

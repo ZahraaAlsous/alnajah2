@@ -506,6 +506,8 @@ Route::prefix('monetor')->middleware(['auth:sanctum','ckeck_monetor'])->group(fu
         Route::post('/updatenoteforabsence_for_teacher/{teacher_id}/{absence_id}',[AdminOperationController::class,'updatenoteforabsence_for_teacher']);
         // اضافة يوم غياب للمدرس و الموظفii
         Route::post('/add_teachers_and_employee_absence', [AdminOperationController::class, 'addAbsenceForTeacherandemployee']);
+        //اضافة علامة جزئية معينة لمادة معينة لطلاب شعبةti
+        Route::put('/add_marks_to_section/{section_id}',[AdminOperationController::class,'add_marks_to_section']);
     });
 
     
@@ -622,8 +624,6 @@ Route::prefix('monetor')->middleware(['auth:sanctum','ckeck_monetor'])->group(fu
 
     // //تعديل تبرير الغياب عند الطالب
     // route::put('/updateAbsence_for_student/{student_id}/{absence_id}', [AdminOperationController::class, 'updateAbsence_for_student']);
-    //اضافة علامة جزئية معينة لمادة معينة لطلاب شعبةti
-    Route::put('/add_marks_to_section/{section_id}',[AdminOperationController::class,'add_marks_to_section']);
     //عرض السنة الدراسية
     Route::get('/display_year',[AdminZaController::class,'display_year']);
     //عرض الساعات الافتراضية للشهرمعين

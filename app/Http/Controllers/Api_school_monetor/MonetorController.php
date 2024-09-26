@@ -817,7 +817,7 @@ public function upload_program_section(Request $request, $section_id, Notificati
 
     if ($image->save()) {
         $title = $program->type;
-        $bode = 'تم رفع برنامج جديد';
+        $body = 'تم رفع برنامج جديد';
 
         $notificationController->sendNotification_for_parent_and_student($title,$body,$section_id);
 
@@ -954,14 +954,17 @@ public function update_program_section(Request $request, $program_id, Notificati
             $bode = 'تم تعديل البرنامج';
     
             $notificationController->sendNotification_for_parent_and_student($title,$body,$section_id);
-    
+            return response()->json([
+                'status' => 'true',
+                'message' => 'Image updated successfully',
+                'path' => asset('/upload/'.$imageName),
+                'data' => $image
+            ]);
         }
 
         return response()->json([
-            'status' => 'true',
-            'message' => 'Image updated successfully',
-            'path' => asset('/upload/'.$imageName),
-            'data' => $image
+            'status' => 'false',
+            'message' => 'Image faild updated',
         ]);
     }
 

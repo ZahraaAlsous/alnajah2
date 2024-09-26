@@ -1362,7 +1362,7 @@ public function add_publish(Request $request, NotificationController $notificati
             if ($publish || ($request->path && $image && $publish)) {
                 $title = 'إعلان جديد';
                 $body = $publish->description.' لمعرفة تفاصيل أكثر مراجعة صفحة الإعلانات';        
-                sendNotification_all_user_live($title,$body);
+                $notificationController->sendNotification_all_user_live($title,$body);
             }
 
             return response()->json([
