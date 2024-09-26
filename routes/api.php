@@ -18,6 +18,10 @@ use App\Http\Controllers\Api_teacher\TeacherController;
 use App\Http\Controllers\Api_teacher\PostController;
 use App\Http\Controllers\Api_admin\AdminZaController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Api_teacher\TeacherControllerd;
+use App\Http\Controllers\Api_teacher\PostControllerd;
+use App\Http\Controllers\Api_teacher\ZdControllerd;
+
 
 
 /*
@@ -213,7 +217,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','check_admin'])->group(functi
     route::get('/desplay_publish', [AdminOperationController::class, 'desplay_publish']);
     // //اضافة للارشيف ملفات وصور
     // route::post('/add_files_and_paper', [AdminOperationController::class, 'add_files_and_paper']);
-    //إنهاء و إعادة تفعيل مناقشةgi
+    //إنهاء و إعادة تفعيل مناقشةti
     Route::post('off_on_post/{post_id}',[PostController::class,'off_on_post']);
 
 
@@ -445,7 +449,7 @@ Route::prefix('monetor')->middleware(['auth:sanctum','ckeck_monetor'])->group(fu
     Route::middleware(['logUserActivity'])->group(function () {
         //تعديل معلومات الطالبii
         Route::post('update_profile_student/{student_id}',[AdminOperationController::class,'update_profile_student']);
-        //إنهاء و إعادة تفعيل مناقشةgi
+        //إنهاء و إعادة تفعيل مناقشةti
         Route::post('off_on_post/{post_id}',[PostController::class,'off_on_post']);
         //رفع برنامج لشعبة محددةti
         Route::post('upload_program_section/{section_id}',[MonetorController::class,'upload_program_section']);
@@ -729,127 +733,122 @@ Route::prefix('parent')->middleware(['auth:sanctum'])->group(function () {
 /*******************************************************teacher*******************************************************/
 Route::prefix('teacher')->middleware(['auth:sanctum','check_teacher'])->group(function () {
     Route::middleware(['logUserActivity'])->group(function () {
-        //إنهاء و إعادة تفعيلgi
-        Route::post('off_on_post/{post_id}',[PostController::class,'off_on_post']);
+        //إنهاء و إعادة تفعيل مناقشةti
+        Route::post('off_on_post/{post_id}',[PostControllerd::class,'off_on_post']);
         // //ارسال انذارات وملاحظات للطالب
         // route::post('/create_note/{student_id}', [AdminZaController::class, 'create_note_student']);
         //اضافة ملفات لدورةsi
-        route::post('/upload_file_image_for_course/{course_id}', [AdminOperationController::class, 'upload_file_image_for_course']);
+        route::post('/upload_file_image_for_course/{course_id}', [ZdControllerd::class, 'upload_file_image_for_course']);
         //رفع ملف أو صورة لملفات السنة الحاليةzahraaii
-        Route::post('/upload_file_image/{subject_id}',[TeacherController::class,'upload_file_image']);
+        Route::post('/upload_file_image/{subject_id}',[TeacherControllerd::class,'upload_file_image']);
         //رفع ملف أو صورة لملفات الأرشيفzahraaii
-        Route::post('/upload_file_image_archive/{archive_id}',[TeacherController::class,'upload_file_image_archive']);
+        Route::post('/upload_file_image_archive/{archive_id}',[TeacherControllerd::class,'upload_file_image_archive']);
         //حذف ملف أو صورةii
-        Route::delete('/delete_file_image/{file_img_id}/{imgFileName}',[TeacherController::class,'delete_file_image']);
+        Route::delete('/delete_file_image/{file_img_id}/{imgFileName}',[TeacherControllerd::class,'delete_file_image']);
         // //تعديل ملف أو صورة
-        // Route::post('/update-file-image/{id}', [TeacherController::class,'update_file_image']);
+        // Route::post('/update-file-image/{id}', [TeacherControllerd::class,'update_file_image']);
         //حذف تعليقii
-        Route::delete('/delete_comment/{comment_id}',[PostController::class,'deleteComment']);
+        Route::delete('/delete_comment/{comment_id}',[PostControllerd::class,'deleteComment']);
         // //تعديل معلومات المدرس
         // route::post('/update_teacher_profile/{teacher_id}',[AuthController::class,'update_teacher_profile']);
         //اضافة علامة طالبgi
-        route::post('/add_mark_to_student/{student_id}', [TeacherController::class, 'add_mark_to_student']);
+        route::post('/add_mark_to_student/{student_id}', [TeacherControllerd::class, 'add_mark_to_student']);
         //حذف ملفات دورةii
-        Route::delete('/delete_file_course/{file_id}',[TeacherController::class,'delete_file_course']);
+        Route::delete('/delete_file_course/{file_id}',[TeacherControllerd::class,'delete_file_course']);
     ////////////////////////////////////////////////////
-        //إنشاء مناقشة لشعبة محددةti
-        Route::post('/create_post/{section_id}',[PostController::class,'create_post']);
+        //إنشاء مناقشة لشعبة محددةgi
+        Route::post('/create_post/{section_id}',[PostControllerd::class,'create_post']);
         //تعديل معلومات الأستاذ الرقم العنوان و كلمة السر
-        Route::post('/edit_some_info_teacher_profile',[TeacherController::class,'edit_some_info_teacher_profile']);
-        //إضافة ملاحظات لطالب معينgi
-        Route::post('/add_note_about_student/{student_id}',[TeacherController::class,'add_note_about_student']);
-        //رفع وظيفةsi
-        Route::post('/upload_homework',[TeacherController::class,'upload_homework']);
-        Route::delete('/delete_homework/{homework_id}',[TeacherController::class,'delete_homework']);
-        //تعديل علامة طالب
-        Route::post('/edit_mark/{mark_id}', [TeacherController::class,'edit_mark']);
-        //تعديل تعليقii
-        Route::post('/edit_comment/{comment_id}',[PostController::class,'editComment']);
+        Route::post('/edit_some_info_teacher_profile',[TeacherControllerd::class,'edit_some_info_teacher_profile']);
+
+    
     });
     //عرض برنامج الدوام الأستاذ
-    Route::get('/my_programe_teacher',[TeacherController::class,'programe']);
+    Route::get('/my_programe_teacher',[TeacherControllerd::class,'programe']);
     //غيابات المدرس
-    Route::get('/out_work_teacher',[TeacherController::class,'out_work_teacher']);
+    Route::get('/out_work_teacher',[TeacherControllerd::class,'out_work_teacher']);
     //عرض المواد التي أدرسها
-    Route::get('/display_supject',[TeacherController::class,'display_supject']);
+    Route::get('/display_supject',[TeacherControllerd::class,'display_supject']);
     //عرض المواد مع الصف التي أدرسها
-    Route::get('/display_supject_with_class',[TeacherController::class,'display_supject_with_class']);
+    Route::get('/display_supject_with_class',[TeacherControllerd::class,'display_supject_with_class']);
     //عرض ملفات و صور المواد التي أدرسها
-    Route::get('/display_file_image_subject/{subject_id}',[TeacherController::class,'display_file_image_subject']);
+    Route::get('/display_file_image_subject/{subject_id}',[TeacherControllerd::class,'display_file_image_subject']);
     //عرض ملفات المواد التي أدرسها
-    Route::get('/display_file_subject_teacher/{subject_id}',[TeacherController::class,'display_file_subject']);
+    Route::get('/display_file_subject_teacher/{subject_id}',[TeacherControllerd::class,'display_file_subject']);
     //عرض صور المواد التي أدرسها
-    Route::get('/display_img_subject_teacher/{subject_id}',[TeacherController::class,'display_img_subject']);
+    Route::get('/display_img_subject_teacher/{subject_id}',[TeacherControllerd::class,'display_img_subject']);
     //عرض السنوات التي تحتوي ملفات للأرشيف حسب المادة
-    Route::get('/display_year_archive/{subject_id}',[TeacherController::class,'display_year_archive']);
+    Route::get('/display_year_archive/{subject_id}',[TeacherControllerd::class,'display_year_archive']);
     //عرض ملفات مادة محددة حسب سنة محددة
-    Route::get('/file_subject_year/{subject_id}/{year}',[TeacherController::class,'file_subject_year']);
+    Route::get('/file_subject_year/{subject_id}/{year}',[TeacherControllerd::class,'file_subject_year']);
     //عرض ملفات مادة محددة حسب سنة محددة
-    Route::get('/img_subject_year/{subject_id}/{year}',[TeacherController::class,'img_subject_year']);
+    Route::get('/img_subject_year/{subject_id}/{year}',[TeacherControllerd::class,'img_subject_year']);
     //المواد و الصف الذي يعطيها المدرس
-    Route::get('/classs',[TeacherController::class,'classs']);
+    Route::get('/classs',[TeacherControllerd::class,'classs']);
     //الشعب التي يعطيها المدرس حسب الصف
-    Route::get('/section/{class_id}', [TeacherController::class,'suction']);
+    Route::get('/section/{class_id}', [TeacherControllerd::class,'suction']);
     //عرض طلاب شعبة محددة
-    Route::get('/display_student_section/{section_id}',[TeacherController::class,'display_student_section']);
+    Route::get('/display_student_section/{section_id}',[TeacherControllerd::class,'display_student_section']);
     //عرض معلومات طالب
-    Route::get('display_info_student/{student_id}', [TeacherController::class,'display_info_student']);
+    Route::get('display_info_student/{student_id}', [TeacherControllerd::class,'display_info_student']);
     //عرض علامات طالب لمادة محددة حسب المادة التي يعطيها المدرس
-    // Route::get('/display_mark/{student_id}', [TeacherController::class,'display_mark']);
-    route::get('desplay_student_marks/{student_id}',[AdminZaController::class,'desplay_student_marks']);
+    // Route::get('/display_mark/{student_id}', [TeacherControllerd::class,'display_mark']);
+    route::get('desplay_student_marks/{student_id}',[ZdController::class,'desplay_student_marks']);
     // //إضافة علامة لطالب
-    // route::post('/add_mark_to_student/{student_id}', [TeacherController::class, 'add_mark_to_student']);
+    // route::post('/add_mark_to_student/{student_id}', [TeacherControllerd::class, 'add_mark_to_student']);
     //عرض المدرس لمناقشاته
-    Route::get('/display_post',[PostController::class,'display_post']);
+    Route::get('/display_post',[PostControllerd::class,'display_post']);
     //عرض مناقشة محددة التعليقات و السؤال
-    Route::get('/post/{post_id}',[PostController::class,'displayPost']);
+    Route::get('/post/{post_id}',[PostControllerd::class,'displayPost']);
     //إضافة تعليق لمناقشة محددة من قبل طالب أو أستاذsi
-    Route::post('/add_comment/{post_id}',[PostController::class,'addComment']);
+    Route::post('/add_comment/{post_id}',[PostControllerd::class,'addComment']);
+    //تعديل تعليق
+    Route::post('/edit_comment/{comment_id}',[PostControllerd::class,'editComment']);
     // //حذف تعليق من قبل طالب أو أستاذ الخ مع العلم تعليق الطالب يستطيع أستاذ أو موجه الخ حذفه
     // Route::delete('/delete_comment/{comment_id}',[PostController::class,'deleteComment']);
     // // //إنهاء مناقشة
     // Route::post('off_on_post/{post_id}',[PostController::class,'off_on_post']);
     //عرض غيابات طالب معين
-    Route::get('/all_out_work_student/{student_id}', [OutWorkStudentController::class, 'all_out_work_student']);
+    Route::get('/all_out_work_student/{student_id}', [ZdController::class, 'all_out_work_student']);
     //سجل دوام الطالب
-    Route::get('report_for_user_work_on/{student_id}/{year}/{month}',[AdminOperationController::class,'generateMonthlyAttendanceReport']);
+    Route::get('report_for_user_work_on/{student_id}/{year}/{month}',[ZdController::class,'generateMonthlyAttendanceReport']);
     //عرض كل الطلاب الذين أدرسهم
-    Route::get('/display_all_students_I_teach',[TeacherController::class,'display_all_students_I_teach']);
+    Route::get('/display_all_students_I_teach',[TeacherControllerd::class,'display_all_students_I_teach']);
     // //رفع ملف أو صورة لملفات السنة الحاليةzahraa
-    // Route::post('/upload_file_image/{subject_id}',[TeacherController::class,'upload_file_image']);
+    // Route::post('/upload_file_image/{subject_id}',[TeacherControllerd::class,'upload_file_image']);
     // //رفع ملف أو صورة لملفات الأرشيفzahraa
     // Route::post('/upload_file_image_archive/{archive_id}',[TeacherController::class,'upload_file_image_archive']);
     // Route::delete('/delete_file_image/{file_img_id}/{imgFileName}',[TeacherController::class,'delete_file_image']);
     // Route::post('/update-file-image/{id}', [TeacherController::class,'update_file_image']);
     // //اضافة ملفات لدورة
     // route::post('/upload_file_image_for_course/{course_id}', [AdminOperationController::class, 'upload_file_image_for_course']);
-    Route::get('/display_all_my_course',[TeacherController::class,'display_all_my_course']);
+    Route::get('/display_all_my_course',[TeacherControllerd::class,'display_all_my_course']);
     //عرض ملفات و صور دورة محددة
-    Route::get('/display_file_course/{course_id}',[Student_operationController::class,'display_file_course']);
+    Route::get('/display_file_course/{course_id}',[ZdController::class,'display_file_course']);
     // Route::delete('/delete_file_course/{file_id}',[TeacherController::class,'delete_file_course']);
     //عرض معلومات الأستاذ و صورته
-    Route::get('/show_my_profile',[TeacherController::class,'show_my_profile']);
+    Route::get('/show_my_profile',[TeacherControllerd::class,'show_my_profile']);
     //عرض برنامج الدوام الاسبوعي للاستاذ
-    route::get('/getWeeklyTeacherSchedule',[TeacherController::class,'getWeeklyTeacherSchedule']);
+    route::get('/getWeeklyTeacherSchedule',[TeacherControllerd::class,'getWeeklyTeacherSchedule']);
     //عرض وظائف مادته
-    Route::get('/my_homework',[TeacherController::class,'homework_subject']);
+    Route::get('/my_homework',[TeacherControllerd::class,'homework_subject']);
     //البحث عن طالب ضمن طلاب شعبة محددة
-    Route::get('/search_student_in_section/{section_id}',[AdminZaController::class,'search_student_in_section']);
-    Route::get('/search_student',[TeacherController::class,'search_student']);
+    Route::get('/search_student_in_section/{section_id}',[ZdController::class,'search_student_in_section']);
+    Route::get('/search_student',[TeacherControllerd::class,'search_student']);
     //عرض السلف والباقي من الراتب والراتب للاستاذ
-    route::get('desplay_maturitie_for_teacher/{year}/{month}', [TeacherController::class, 'desplay_maturitie_for_teacher']);
+    route::get('desplay_maturitie_for_teacher/{year}/{month}', [TeacherControllerd::class, 'desplay_maturitie_for_teacher']);
     //عرض الساعات الافتراضية للشهرمعين
-    Route::get('/getTeacherExtraHours',[TeacherController::class,'getTeacherExtraHours']);
+    Route::get('/getTeacherExtraHours',[TeacherControllerd::class,'getTeacherExtraHours']);
     //عرض تفاصيل ساعات الغياب
-    Route::get('/get_teacher_out_of_work_hour', [TeacherController::class, 'getTeacherOutOfWorkHour']);
+    Route::get('/get_teacher_out_of_work_hour', [TeacherControllerd::class, 'getTeacherOutOfWorkHour']);
     //عرض تفاصيل دورة za
-    route::get('display_info_course/{course_id}', [TeacherController::class, 'display_info_course']);
+    route::get('display_info_course/{course_id}', [TeacherControllerd::class, 'display_info_course']);
     //عرض طلبات التسجيل في دورة معينة
-    Route::get('display_student_course/{course_id}',[TeacherController::class,'display_student_course']);
+    Route::get('display_student_course/{course_id}',[TeacherControllerd::class,'display_student_course']);
     //عرض الملاحظات التي بحق الابن
-    Route::get('/display_note/{student_id}',[ParenttController::class,'display_note']);
+    Route::get('/display_note/{student_id}',[ZdController::class,'display_note']);
     //عرض معلومات المعهد
-    Route::get('/display_info_academy',[AdminZaController::class,'display_info_academy']);
+    Route::get('/display_info_academy',[ZdController::class,'display_info_academy']);
 });
 
 
